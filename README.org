@@ -1,1 +1,34 @@
 * DevHouse Microservices Workshop
+Before we start you should have golang on your machine, so lets get it, or if you already has one, just install useful libraries
+** Install golang
+- For Linux:
+#+BEGIN_SRC bash
+sudo apt install golang-go
+#+END_SRC
+- For MacOS:
+#+BEGIN_SRC bash
+brew install go
+#+END_SRC
+** Set GOPATH variables
+Add next lines into you .bashrc or .zshrc, depends on what terminal emulatar you use.
+#+BEGIN_SRC bash
+export GOPATH=$HOME/go
+export PATH="$PATH:$GOPATH/bin:$PATH"
+#+END_SRC
+** Install useful libraries
+- Goimports
+#+BEGIN_SRC bash
+go get golang.org/x/tools/cmd/goimports
+#+END_SRC
+- Go Linter
+  - For Linux:
+#+BEGIN_SRC bash
+go get -u github.com/golangci/golangci-lint
+cd $(go env GOPATH)/src/github.com/golangci/golangci-lint/cmd/golangci-lint
+go install -ldflags "-X 'main.version=$(git describe --tags)' -X 'main.commit=$(git rev-parse --short HEAD)' -X 'main.date=$(date)'"
+#+END_SRC
+  - For MacOS:
+#+BEGIN_SRC bash
+brew install golangci/tap/golangci-lint
+brew upgrade golangci/tap/golangci-lint
+#+END_SRC
