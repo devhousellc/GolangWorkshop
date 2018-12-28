@@ -1,0 +1,30 @@
+CommitMsg:
+  ALL:
+    requires_files: false
+    quiet: false
+    on_warn: fail
+
+  CapitalizedSubject:
+    enabled: true
+    description: 'Check subject capitalization'
+
+  EmptyMessage:
+    enabled: true
+    description: 'Check for empty commit message'
+    quiet: true
+
+  SingleLineSubject:
+    enabled: true
+    description: 'Check subject line'
+
+PreCommit:
+  ALL:
+    problem_on_unmodified_line: report
+    requires_files: true
+    required: false
+    quiet: false
+    on_warn: fail
+
+  Golangci:
+    enabled: true
+    command: ['golangci-lint', 'run']
