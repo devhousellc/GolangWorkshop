@@ -1,36 +1,20 @@
 package main
 
 import (
-	"io/ioutil"
 	"net/http"
 	"net/http/httptest"
-	"strings"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
-// TestHandler is the simplest test: check base (/) URL
-func TestHandler(t *testing.T) {
-	ts := httptest.NewServer(http.HandlerFunc(home))
-	defer ts.Close()
+func TestBaseRoute(t *testing.T) {
+	router := setupRouter()
 
-	res, err := http.Get(ts.URL + "/")
-	if err != nil {
-		t.Fatal(err)
-	}
+	w := httptest.NewRecorder()
+	req, _ := http.NewRequest("GET", "/", nil)
+	router.ServeHTTP(w, req)
 
-	greeting, err := ioutil.ReadAll(res.Body)
-	res.Body.Close()
-
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	expectedGreeting := "Hello to DevHouse from /..."
-	testingGreeting := strings.Trim(string(greeting), " \n")
-	if testingGreeting != expectedGreeting {
-		t.Fatalf(
-			"Wrong greeting '%s', expected '%s'",
-			testingGreeting, expectedGreeting,
-		)
-	}
+	assert.Equal(t, 200, w.Code)
+	assert.Equal(t, "Hello to DevHouse", w.Body.String())
 }

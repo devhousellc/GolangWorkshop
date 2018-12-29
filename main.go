@@ -1,22 +1,27 @@
 package main
 
 import (
-	"fmt"
 	"log"
-	"net/http"
+
+	"github.com/gin-gonic/gin"
 )
 
 // Run server: go run -race main.go
-// Try requests: curl http://127.0.0.1:8000/test
+// Try requests: curl http://127.0.0.1:8080
 func main() {
-	http.HandleFunc("/", home)
-	// http.ListenAndServe(":8000", nil)
-	if err := http.ListenAndServe(":8000", nil); err != nil {
-		log.Fatalln(err)
+	r := setupRouter()
+	if err := r.Run(":8080"); err != nil {
+		log.Fatal(err)
 	}
-
 }
 
-func home(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "Hello to DevHouse from %s...", r.URL.Path)
+func setupRouter() *gin.Engine {
+	r := gin.Default()
+	r.GET("/", home)
+
+	return r
+}
+
+func home(c *gin.Context) {
+	c.String(200, "Hello to DevHouse")
 }
